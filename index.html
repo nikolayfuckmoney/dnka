@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>DNKA Custom Fonts</title>
+    <style>
+        /* Подключаем твои файлы шрифтов */
+        @font-face {
+            font-family: 'CustomFont1';
+            src: url('1.ttf') format('truetype');
+        }
+        @font-face {
+            font-family: 'CustomFont2';
+            src: url('2.ttf') format('truetype');
+        }
+        @font-face {
+            font-family: 'CustomFont3';
+            src: url('3.ttf') format('truetype');
+        }
+
+        body {
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #typewriter {
+            font-size: 100px;
+            font-weight: normal;
+            border-right: 5px solid black;
+            padding-right: 8px;
+            white-space: nowrap;
+            /* Плавный переход при смене шрифта (опционально) */
+            transition: font-family 0.2s ease;
+        }
+
+        /* Классы для переключения через JS */
+        .font-style-1 { font-family: 'CustomFont1', sans-serif; }
+        .font-style-2 { font-family: 'CustomFont2', serif; }
+        .font-style-3 { font-family: 'CustomFont3', monospace; }
+
+        @keyframes blink {
+            50% { border-color: transparent; }
+        }
+        #typewriter {
+            animation: blink 0.7s step-end infinite;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="typewriter" class="font-style-1"></div>
+
+    <script>
+        const text = "dnka";
+        const typewriter = document.getElementById('typewriter');
+        const fontClasses = ['font-style-1', 'font-style-2', 'font-style-3'];
+        
+        let fontIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        let typeSpeed = 150;
+
+        function animate() {
+            // Применяем текущий шрифт
+            typewriter.className = fontClasses[fontIndex];
+
+            const currentVisible = text.substring(0, charIndex);
+            typewriter.textContent = currentVisible;
+
+            if (!isDeleting) {
+                charIndex++;
+                typeSpeed = 200; // Скорость печати
+            } else {
+                charIndex--;
+                typeSpeed = 100; // Скорость удаления
+            }
+
+            // Если слово напечатано полностью
+            if (!isDeleting && charIndex > text.length) {
+                isDeleting = true;
+                typeSpeed = 1200; // Пауза в конце слова
+            } 
+            // Если слово удалено полностью
+            else if (isDeleting && charIndex < 0) {
+                isDeleting = false;
+                charIndex = 0;
+                // Переходим к следующему шрифту
+                fontIndex = (fontIndex + 1) % fontClasses.length;
+                typeSpeed = 500;
+            }
+
+            setTimeout(animate, typeSpeed);
+        }
+
+        document.addEventListener('DOMContentLoaded', animate);
+    </script>
+</body>
+</html>
