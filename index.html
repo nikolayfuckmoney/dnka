@@ -3,62 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>dnka profile</title>
+    <title>dnka</title>
     <style>
         /* Подключение шрифтов */
         @font-face { font-family: 'CustomFont1'; src: url('1.ttf') format('truetype'); }
         @font-face { font-family: 'CustomFont2'; src: url('2.otf') format('opentype'); }
         @font-face { font-family: 'CustomFont3'; src: url('3.ttf') format('truetype'); }
 
-        /* Полная блокировка скролла и жестов */
         html, body {
             height: 100%;
             margin: 0;
             padding: 0;
             background-color: white;
-            overflow: hidden; /* Запрет скролла */
-            position: fixed; /* Фиксация экрана */
+            overflow: hidden; 
+            position: fixed;
             width: 100%;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            align-items: center; /* Центрируем всё по горизонтали */
             font-family: sans-serif;
-            touch-action: none; /* Запрет жестов зума и свайпов */
-            -webkit-user-select: none; /* Запрет выделения текста для чистоты аватара */
+            touch-action: none; 
+            -webkit-user-select: none;
             user-select: none;
         }
 
-        /* Верхняя часть - Логотип слева */
-        header {
-            padding: 25px 30px;
+        /* Контейнер для выравнивания логотипа и фото по одной линии */
+        .content-block {
             display: flex;
-            justify-content: flex-start;
+            flex-direction: column;
+            align-items: flex-start; /* Выравнивание элементов внутри блока по левому краю */
+            width: 85vw; /* Ширина блока, определяющая размер фото */
+            max-width: 350px; /* Максимальный размер фото */
+            margin-top: auto;
+            margin-bottom: auto;
         }
 
         #typewriter {
-            font-size: 22px;
+            font-size: 24px;
             font-weight: bold;
             border-right: 2px solid black;
             padding-right: 3px;
             white-space: nowrap;
             min-height: 1.2em;
+            margin-bottom: 20px; /* Отступ от текста до фото */
         }
 
-        /* Центральная часть - Квадратное фото без скруглений */
-        main {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-grow: 1;
-        }
-
+        /* Квадратное фото без скруглений */
         .photo-wrapper {
-            width: 75vw;
-            max-width: 300px;
+            width: 100%; /* Занимает всю ширину контент-блока */
             aspect-ratio: 1 / 1;
             overflow: hidden;
-            border-radius: 0; /* Убрано скругление */
-            border: 1px solid #f0f0f0; /* Едва заметная рамка для четкости границ */
+            border-radius: 0;
         }
 
         .photo-wrapper img {
@@ -68,13 +63,14 @@
             display: block;
         }
 
-        /* Нижняя часть - Кнопки */
+        /* Кнопки внизу */
         footer {
-            padding-bottom: 50px; /* Отступ от нижнего края экрана */
+            padding-bottom: 50px;
             display: flex;
-            gap: 15px;
+            gap: 12px;
             justify-content: center;
             flex-wrap: wrap;
+            width: 100%;
         }
 
         .social-link {
@@ -82,15 +78,13 @@
             color: black;
             font-size: 14px;
             font-family: 'CustomFont1', sans-serif;
-            padding: 5px 10px;
+            padding: 5px 5px;
             transition: opacity 0.2s;
             cursor: pointer;
-            -webkit-tap-highlight-color: transparent; /* Убирает синий блик при нажатии на мобильных */
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .social-link:hover {
-            opacity: 0.5;
-        }
+        .social-link:hover { opacity: 0.5; }
 
         /* Шрифты для анимации */
         .f1 { font-family: 'CustomFont1', sans-serif; }
@@ -101,15 +95,14 @@
         #typewriter { animation: blink 0.8s step-end infinite; }
     </style>
 </head>
-<body oncontextmenu="return false;"> <header>
-        <div id="typewriter" class="f1"></div>
-    </header>
+<body oncontextmenu="return false;">
 
-    <main>
+    <div class="content-block">
+        <div id="typewriter" class="f1"></div>
         <div class="photo-wrapper">
             <img src="1.png" alt="dnka">
         </div>
-    </main>
+    </div>
 
     <footer>
         <a href="https://instagram.com/ССЫЛКА" class="social-link">inst</a>
@@ -120,7 +113,7 @@
     </footer>
 
     <script>
-        // Анимация текста dnka
+        // Анимация текста
         const text = "dnka";
         const typewriter = document.getElementById('typewriter');
         const fontClasses = ['f1', 'f2', 'f3'];
@@ -141,7 +134,7 @@
             setTimeout(animate, typeSpeed);
         }
 
-        // Логика копирования Discord
+        // Копирование Discord
         const discordBtn = document.getElementById('discord-btn');
         discordBtn.addEventListener('click', function(e) {
             e.preventDefault();
@@ -152,19 +145,12 @@
             });
         });
 
-        // Блокировка жестов зума (для iOS/Android)
-        document.addEventListener('touchstart', function (event) {
-            if (event.touches.length > 1) {
-                event.preventDefault();
-            }
-        }, { passive: false });
-
+        // Блокировка зума
+        document.addEventListener('touchstart', (e) => { if (e.touches.length > 1) e.preventDefault(); }, { passive: false });
         let lastTouchEnd = 0;
-        document.addEventListener('touchend', function (event) {
+        document.addEventListener('touchend', (e) => {
             const now = (new Date()).getTime();
-            if (now - lastTouchEnd <= 300) {
-                event.preventDefault();
-            }
+            if (now - lastTouchEnd <= 300) e.preventDefault();
             lastTouchEnd = now;
         }, false);
 
